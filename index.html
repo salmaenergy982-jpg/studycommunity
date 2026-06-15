@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyCommunity — Étudie. Concentre-toi. Progresse.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg-grid"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">◆</span>
+    <span class="brand-name">StudyCommunity</span>
+  </div>
+  <nav class="topnav">
+    <a href="#timer" class="active">Session</a>
+    <a href="#tasks">Tâches</a>
+    <a href="#streak">Streak</a>
+    <a href="#rooms">Salles</a>
+  </nav>
+  <div class="streak-pill" id="streakPill">
+    <span class="flame">🔥</span>
+    <span id="streakCount">0</span>
+    <span class="streak-label">jours</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO / TIMER -->
+  <section class="hero" id="timer">
+    <div class="hero-text">
+      <p class="eyebrow">Session de concentration</p>
+      <h1>Une heure de travail<br><span class="accent">vaut mieux</span><br>qu'une journée distraite.</h1>
+      <p class="hero-sub">Choisis ta durée, lance le minuteur, et laisse StudyCommunity compter tes minutes de concentration réelle.</p>
+
+      <div class="mode-switch" id="modeSwitch">
+        <button class="mode-btn active" data-minutes="25">Focus · 25 min</button>
+        <button class="mode-btn" data-minutes="50">Deep Work · 50 min</button>
+        <button class="mode-btn" data-minutes="5">Pause · 5 min</button>
+      </div>
+    </div>
+
+    <div class="timer-wrap">
+      <svg class="timer-ring" viewBox="0 0 240 240">
+        <circle class="ring-track" cx="120" cy="120" r="108"></circle>
+        <circle class="ring-progress" id="ringProgress" cx="120" cy="120" r="108"></circle>
+      </svg>
+      <div class="timer-center">
+        <span class="timer-time" id="timerDisplay">25:00</span>
+        <span class="timer-status" id="timerStatus">Prêt à démarrer</span>
+      </div>
+      <div class="timer-controls">
+        <button class="ctrl-btn primary" id="startBtn">Démarrer</button>
+        <button class="ctrl-btn" id="resetBtn">Réinitialiser</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TASKS -->
+  <section class="panel" id="tasks">
+    <div class="panel-head">
+      <p class="eyebrow">À faire aujourd'hui</p>
+      <h2>Ta liste de tâches</h2>
+    </div>
+
+    <div class="todo-card">
+      <form id="todoForm" class="todo-input-row">
+        <input type="text" id="todoInput" placeholder="Ex : Réviser le chapitre 3 de thermodynamique" autocomplete="off">
+        <button type="submit" class="ctrl-btn primary">Ajouter</button>
+      </form>
+      <ul class="todo-list" id="todoList"></ul>
+      <p class="todo-empty" id="todoEmpty">Aucune tâche pour l'instant — ajoute la première chose à accomplir aujourd'hui.</p>
+      <div class="todo-progress">
+        <div class="todo-progress-bar"><div class="todo-progress-fill" id="todoProgressFill"></div></div>
+        <span id="todoProgressLabel">0 / 0 terminées</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- STREAK -->
+  <section class="panel" id="streak">
+    <div class="panel-head">
+      <p class="eyebrow">Régularité</p>
+      <h2>Ton streak de concentration</h2>
+    </div>
+
+    <div class="streak-card">
+      <div class="streak-big">
+        <span class="streak-number" id="streakBig">0</span>
+        <span class="streak-word">jours consécutifs</span>
+      </div>
+      <div class="streak-week" id="streakWeek"></div>
+      <p class="streak-note">Termine au moins une session de concentration chaque jour pour garder ton streak vivant. Il se met à jour automatiquement quand une session se termine.</p>
+    </div>
+  </section>
+
+  <!-- ROOMS (placeholder, future feature) -->
+  <section class="panel" id="rooms">
+    <div class="panel-head">
+      <p class="eyebrow">Bientôt disponible</p>
+      <h2>Salles d'étude en direct</h2>
+    </div>
+
+    <div class="rooms-grid">
+      <article class="room-card ghost">
+        <div class="room-thumb">
+          <span class="room-live">EN CONSTRUCTION</span>
+        </div>
+        <div class="room-info">
+          <h3>Salle Mathématiques</h3>
+          <p>Étudie en visio avec d'autres élèves, micro coupé, juste pour la motivation.</p>
+        </div>
+      </article>
+      <article class="room-card ghost">
+        <div class="room-thumb">
+          <span class="room-live">EN CONSTRUCTION</span>
+        </div>
+        <div class="room-info">
+          <h3>Salle Ingénierie</h3>
+          <p>Rejoins une session de travail silencieuse avec d'autres futurs ingénieurs.</p>
+        </div>
+      </article>
+      <article class="room-card ghost">
+        <div class="room-thumb">
+          <span class="room-live">EN CONSTRUCTION</span>
+        </div>
+        <div class="room-info">
+          <h3>Salle Libre</h3>
+          <p>N'importe quelle matière, n'importe quand. Juste de la concentration partagée.</p>
+        </div>
+      </article>
+    </div>
+    <p class="rooms-note">Cette fonctionnalité arrive dans une prochaine version de StudyCommunity.</p>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>StudyCommunity — fait pour étudier mieux, pas plus longtemps.</p>
+</footer>
+
+<audio id="dingSound" preload="auto">
+  <source src="https://cdn.freesound.org/previews/411/411089_5121236-lq.mp3" type="audio/mpeg">
+</audio>
+
+<script src="script.js"></script>
+</body>
+</html>
