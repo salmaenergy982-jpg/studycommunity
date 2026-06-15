@@ -13,143 +13,173 @@
 
 <div class="bg-grid"></div>
 
-<header class="topbar">
-  <div class="brand">
-    <span class="brand-mark">◆</span>
-    <span class="brand-name">StudyCommunity</span>
+<!-- AUTH SCREEN -->
+<div class="auth-screen" id="authScreen">
+  <div class="auth-box">
+    <div class="brand">
+      <span class="brand-mark">◆</span>
+      <span class="brand-name">StudyCommunity</span>
+    </div>
+    <p class="auth-sub">Study smarter, together.</p>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Sign in</button>
+      <button class="auth-tab" id="tabSignup" onclick="switchTab('signup')">Sign up</button>
+    </div>
+
+    <div id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email" class="auth-input">
+      <input type="password" id="loginPassword" placeholder="Password" class="auth-input">
+      <button class="ctrl-btn primary full" onclick="login()">Sign in</button>
+    </div>
+
+    <div id="signupForm" style="display:none">
+      <input type="email" id="signupEmail" placeholder="Email" class="auth-input">
+      <input type="password" id="signupPassword" placeholder="Password (min. 6 characters)" class="auth-input">
+      <button class="ctrl-btn primary full" onclick="signup()">Create account</button>
+    </div>
+
+    <p class="auth-error" id="authError"></p>
+    <p class="auth-success" id="authSuccess"></p>
   </div>
-  <nav class="topnav">
-    <a href="#timer" class="active">Session</a>
-    <a href="#tasks">Tasks</a>
-    <a href="#streak">Streak</a>
-    <a href="#rooms">Rooms</a>
-  </nav>
-  <div class="streak-pill" id="streakPill">
-    <span class="flame">🔥</span>
-    <span id="streakCount">0</span>
-    <span class="streak-label">days</span>
-  </div>
-</header>
+</div>
 
-<main>
+<!-- MAIN APP -->
+<div class="app" id="appScreen" style="display:none">
 
-  <!-- HERO / TIMER -->
-  <section class="hero" id="timer">
-    <div class="hero-text">
-      <p class="eyebrow">Focus session</p>
-      <h1>One hour of work<br><span class="accent">beats</span><br>a day of distraction.</h1>
-      <p class="hero-sub">Pick your duration, start the timer, and let StudyCommunity count your real focused minutes.</p>
-
-      <div class="mode-switch" id="modeSwitch">
-        <button class="mode-btn active" data-minutes="25">Focus · 25 min</button>
-        <button class="mode-btn" data-minutes="50">Deep Work · 50 min</button>
-        <button class="mode-btn" data-minutes="5">Break · 5 min</button>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">◆</span>
+      <span class="brand-name">StudyCommunity</span>
+    </div>
+    <nav class="topnav">
+      <a href="#timer" class="active">Session</a>
+      <a href="#tasks">Tasks</a>
+      <a href="#streak">Streak</a>
+      <a href="#rooms">Rooms</a>
+    </nav>
+    <div class="topbar-right">
+      <div class="streak-pill" id="streakPill">
+        <span class="flame">🔥</span>
+        <span id="streakCount">0</span>
+        <span class="streak-label">days</span>
       </div>
+      <button class="ctrl-btn logout-btn" onclick="logout()">Sign out</button>
     </div>
+  </header>
 
-    <div class="timer-wrap">
-      <svg class="timer-ring" viewBox="0 0 240 240">
-        <circle class="ring-track" cx="120" cy="120" r="108"></circle>
-        <circle class="ring-progress" id="ringProgress" cx="120" cy="120" r="108"></circle>
-      </svg>
-      <div class="timer-center">
-        <span class="timer-time" id="timerDisplay">25:00</span>
-        <span class="timer-status" id="timerStatus">Ready to start</span>
+  <main>
+
+    <!-- TIMER -->
+    <section class="hero" id="timer">
+      <div class="hero-text">
+        <p class="eyebrow">Focus session</p>
+        <h1>One hour of work<br><span class="accent">beats</span><br>a day of distraction.</h1>
+        <p class="hero-sub">Pick your duration, start the timer, and let StudyCommunity count your real focused minutes.</p>
+
+        <div class="mode-switch" id="modeSwitch">
+          <button class="mode-btn active" data-minutes="25">Focus · 25 min</button>
+          <button class="mode-btn" data-minutes="50">Deep Work · 50 min</button>
+          <button class="mode-btn" data-minutes="5">Break · 5 min</button>
+        </div>
       </div>
-      <div class="timer-controls">
-        <button class="ctrl-btn primary" id="startBtn">Start</button>
-        <button class="ctrl-btn" id="resetBtn">Reset</button>
+
+      <div class="timer-wrap">
+        <svg class="timer-ring" viewBox="0 0 240 240">
+          <circle class="ring-track" cx="120" cy="120" r="108"></circle>
+          <circle class="ring-progress" id="ringProgress" cx="120" cy="120" r="108"></circle>
+        </svg>
+        <div class="timer-center">
+          <span class="timer-time" id="timerDisplay">25:00</span>
+          <span class="timer-status" id="timerStatus">Ready to start</span>
+        </div>
+        <div class="timer-controls">
+          <button class="ctrl-btn primary" id="startBtn">Start</button>
+          <button class="ctrl-btn" id="resetBtn">Reset</button>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- TASKS -->
-  <section class="panel" id="tasks">
-    <div class="panel-head">
-      <p class="eyebrow">Today's plan</p>
-      <h2>Your to-do list</h2>
-    </div>
-
-    <div class="todo-card">
-      <form id="todoForm" class="todo-input-row">
-        <input type="text" id="todoInput" placeholder="E.g. Review chapter 3 of thermodynamics" autocomplete="off">
-        <button type="submit" class="ctrl-btn primary">Add</button>
-      </form>
-      <ul class="todo-list" id="todoList"></ul>
-      <p class="todo-empty" id="todoEmpty">No tasks yet — add the first thing you want to get done today.</p>
-      <div class="todo-progress">
-        <div class="todo-progress-bar"><div class="todo-progress-fill" id="todoProgressFill"></div></div>
-        <span id="todoProgressLabel">0 / 0 done</span>
+    <!-- TASKS -->
+    <section class="panel" id="tasks">
+      <div class="panel-head">
+        <p class="eyebrow">Today's plan</p>
+        <h2>Your to-do list</h2>
       </div>
-    </div>
-  </section>
 
-  <!-- STREAK -->
-  <section class="panel" id="streak">
-    <div class="panel-head">
-      <p class="eyebrow">Consistency</p>
-      <h2>Your focus streak</h2>
-    </div>
-
-    <div class="streak-card">
-      <div class="streak-big">
-        <span class="streak-number" id="streakBig">0</span>
-        <span class="streak-word">days in a row</span>
+      <div class="todo-card">
+        <form id="todoForm" class="todo-input-row">
+          <input type="text" id="todoInput" placeholder="E.g. Review chapter 3 of thermodynamics" autocomplete="off">
+          <button type="submit" class="ctrl-btn primary">Add</button>
+        </form>
+        <ul class="todo-list" id="todoList"></ul>
+        <p class="todo-empty" id="todoEmpty">No tasks yet — add the first thing you want to get done today.</p>
+        <div class="todo-progress">
+          <div class="todo-progress-bar"><div class="todo-progress-fill" id="todoProgressFill"></div></div>
+          <span id="todoProgressLabel">0 / 0 done</span>
+        </div>
       </div>
-      <div class="streak-week" id="streakWeek"></div>
-      <p class="streak-note">Complete at least one focus session each day to keep your streak alive. It updates automatically when a session finishes.</p>
-    </div>
-  </section>
+    </section>
 
-  <!-- ROOMS (placeholder, future feature) -->
-  <section class="panel" id="rooms">
-    <div class="panel-head">
-      <p class="eyebrow">Coming soon</p>
-      <h2>Live study rooms</h2>
-    </div>
+    <!-- STREAK -->
+    <section class="panel" id="streak">
+      <div class="panel-head">
+        <p class="eyebrow">Consistency</p>
+        <h2>Your focus streak</h2>
+      </div>
 
-    <div class="rooms-grid">
-      <article class="room-card ghost">
-        <div class="room-thumb">
-          <span class="room-live">UNDER CONSTRUCTION</span>
+      <div class="streak-card">
+        <div class="streak-big">
+          <span class="streak-number" id="streakBig">0</span>
+          <span class="streak-word">days in a row</span>
         </div>
-        <div class="room-info">
-          <h3>Math Room</h3>
-          <p>Study on video with other students, mic off, just for the motivation.</p>
-        </div>
-      </article>
-      <article class="room-card ghost">
-        <div class="room-thumb">
-          <span class="room-live">UNDER CONSTRUCTION</span>
-        </div>
-        <div class="room-info">
-          <h3>Engineering Room</h3>
-          <p>Join a silent work session with other future engineers.</p>
-        </div>
-      </article>
-      <article class="room-card ghost">
-        <div class="room-thumb">
-          <span class="room-live">UNDER CONSTRUCTION</span>
-        </div>
-        <div class="room-info">
-          <h3>Open Room</h3>
-          <p>Any subject, any time. Just shared focus.</p>
-        </div>
-      </article>
-    </div>
-    <p class="rooms-note">This feature is coming in a future version of StudyCommunity.</p>
-  </section>
+        <div class="streak-week" id="streakWeek"></div>
+        <p class="streak-note">Complete at least one focus session each day to keep your streak alive. Your streak is saved across all your devices.</p>
+      </div>
+    </section>
 
-</main>
+    <!-- ROOMS -->
+    <section class="panel" id="rooms">
+      <div class="panel-head">
+        <p class="eyebrow">Coming soon</p>
+        <h2>Live study rooms</h2>
+      </div>
 
-<footer class="site-footer">
-  <p>StudyCommunity — built to help you study smarter, not longer.</p>
-</footer>
+      <div class="rooms-grid">
+        <article class="room-card ghost">
+          <div class="room-thumb"><span class="room-live">UNDER CONSTRUCTION</span></div>
+          <div class="room-info">
+            <h3>Math Room</h3>
+            <p>Study on video with other students, mic off, just for the motivation.</p>
+          </div>
+        </article>
+        <article class="room-card ghost">
+          <div class="room-thumb"><span class="room-live">UNDER CONSTRUCTION</span></div>
+          <div class="room-info">
+            <h3>Engineering Room</h3>
+            <p>Join a silent work session with other future engineers.</p>
+          </div>
+        </article>
+        <article class="room-card ghost">
+          <div class="room-thumb"><span class="room-live">UNDER CONSTRUCTION</span></div>
+          <div class="room-info">
+            <h3>Open Room</h3>
+            <p>Any subject, any time. Just shared focus.</p>
+          </div>
+        </article>
+      </div>
+      <p class="rooms-note">This feature is coming in a future version of StudyCommunity.</p>
+    </section>
 
-<audio id="dingSound" preload="auto">
-  <source src="https://cdn.freesound.org/previews/411/411089_5121236-lq.mp3" type="audio/mpeg">
-</audio>
+  </main>
 
+  <footer class="site-footer">
+    <p>StudyCommunity — built to help you study smarter, not longer.</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="script.js"></script>
 </body>
 </html>
