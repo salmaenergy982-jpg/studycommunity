@@ -1,8 +1,8 @@
 /* ============================================
-   StudyCommunity — script principal
-   Timer Pomodoro + To-do list + Streak quotidien
-   Toutes les données sont sauvegardées dans
-   le localStorage du navigateur (pas de serveur).
+   StudyCommunity — main script
+   Pomodoro timer + To-do list + Daily streak
+   All data is saved in the browser's
+   localStorage (no server needed).
    ============================================ */
 
 // ---------- TIMER ----------
@@ -40,8 +40,8 @@ function tick() {
   } else {
     clearInterval(timerInterval);
     isRunning = false;
-    startBtn.textContent = 'Démarrer';
-    timerStatus.textContent = 'Session terminée !';
+    startBtn.textContent = 'Start';
+    timerStatus.textContent = 'Session complete!';
     if (dingSound) {
       dingSound.play().catch(() => {});
     }
@@ -53,8 +53,8 @@ function startPause() {
   if (isRunning) {
     clearInterval(timerInterval);
     isRunning = false;
-    startBtn.textContent = 'Reprendre';
-    timerStatus.textContent = 'En pause';
+    startBtn.textContent = 'Resume';
+    timerStatus.textContent = 'Paused';
   } else {
     if (remainingSeconds === 0) {
       remainingSeconds = totalSeconds;
@@ -62,7 +62,7 @@ function startPause() {
     timerInterval = setInterval(tick, 1000);
     isRunning = true;
     startBtn.textContent = 'Pause';
-    timerStatus.textContent = 'Concentration en cours…';
+    timerStatus.textContent = 'Focusing…';
   }
   updateDisplay();
 }
@@ -71,8 +71,8 @@ function resetTimer() {
   clearInterval(timerInterval);
   isRunning = false;
   remainingSeconds = totalSeconds;
-  startBtn.textContent = 'Démarrer';
-  timerStatus.textContent = 'Prêt à démarrer';
+  startBtn.textContent = 'Start';
+  timerStatus.textContent = 'Ready to start';
   updateDisplay();
 }
 
@@ -120,7 +120,7 @@ function renderTodos() {
 
     const check = document.createElement('button');
     check.className = 'todo-check' + (todo.done ? ' checked' : '');
-    check.setAttribute('aria-label', todo.done ? 'Marquer comme non terminée' : 'Marquer comme terminée');
+    check.setAttribute('aria-label', todo.done ? 'Mark as not done' : 'Mark as done');
     check.textContent = todo.done ? '✓' : '';
     check.addEventListener('click', () => {
       todos[index].done = !todos[index].done;
@@ -134,7 +134,7 @@ function renderTodos() {
 
     const del = document.createElement('button');
     del.className = 'todo-delete';
-    del.setAttribute('aria-label', 'Supprimer la tâche');
+    del.setAttribute('aria-label', 'Delete task');
     del.textContent = '✕';
     del.addEventListener('click', () => {
       todos.splice(index, 1);
@@ -152,7 +152,7 @@ function renderTodos() {
   const done = todos.filter(t => t.done).length;
   const percent = total === 0 ? 0 : Math.round((done / total) * 100);
   todoProgressFill.style.width = percent + '%';
-  todoProgressLabel.textContent = `${done} / ${total} terminées`;
+  todoProgressLabel.textContent = `${done} / ${total} done`;
 }
 
 todoForm.addEventListener('submit', (e) => {
@@ -172,7 +172,7 @@ const streakCount = document.getElementById('streakCount');
 const streakBig = document.getElementById('streakBig');
 const streakWeek = document.getElementById('streakWeek');
 
-const DAY_LABELS = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+const DAY_LABELS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
 function todayKey() {
   const d = new Date();
@@ -202,7 +202,7 @@ function registerSessionCompleted() {
   const todayStr = today.toDateString();
 
   if (data.lastDate === todayStr) {
-    // Déjà compté aujourd'hui, on ne fait rien
+    // Already counted today, do nothing
   } else if (data.lastDate === null) {
     data.count = 1;
   } else {
@@ -229,7 +229,7 @@ function renderStreak() {
   streakCount.textContent = data.count;
   streakBig.textContent = data.count;
 
-  // Affiche les 7 derniers jours
+  // Show the last 7 days
   streakWeek.innerHTML = '';
   const today = new Date();
   for (let i = 6; i >= 0; i--) {
