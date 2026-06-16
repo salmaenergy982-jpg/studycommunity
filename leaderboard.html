@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyCommunity — Leaderboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg-grid"></div>
+
+<div class="app" id="appScreen">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">◆</span>
+      <span class="brand-name">StudyCommunity</span>
+    </div>
+    <nav class="topnav">
+      <a href="index.html">Session</a>
+      <a href="profile.html">Profile</a>
+      <a href="rooms.html">Rooms</a>
+      <a href="leaderboard.html" class="active">Leaderboard</a>
+      <a href="settings.html">Settings</a>
+    </nav>
+    <div class="topbar-right">
+      <div class="streak-pill" id="streakPill">
+        <span class="flame">🔥</span>
+        <span id="streakCount">0</span>
+        <span class="streak-label">days</span>
+      </div>
+      <button class="ctrl-btn logout-btn" onclick="logout()">Sign out</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel">
+      <div class="panel-head">
+        <p class="eyebrow">Top focused students</p>
+        <h2>Leaderboard</h2>
+      </div>
+
+      <div class="leaderboard-tabs">
+        <button class="auth-tab active" id="tabStreak" onclick="switchSort('streak')">By streak</button>
+        <button class="auth-tab" id="tabMinutes" onclick="switchSort('minutes')">By minutes focused</button>
+      </div>
+
+      <div class="leaderboard-list" id="leaderboardList">
+        <p class="todo-empty">Loading leaderboard…</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>StudyCommunity — built to help you study smarter, not longer.</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="leaderboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyCommunity — Study Rooms</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg-grid"></div>
+
+<div class="app" id="appScreen">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">◆</span>
+      <span class="brand-name">StudyCommunity</span>
+    </div>
+    <nav class="topnav">
+      <a href="index.html">Session</a>
+      <a href="profile.html">Profile</a>
+      <a href="rooms.html" class="active">Rooms</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="settings.html">Settings</a>
+    </nav>
+    <div class="topbar-right">
+      <div class="streak-pill" id="streakPill">
+        <span class="flame">🔥</span>
+        <span id="streakCount">0</span>
+        <span class="streak-label">days</span>
+      </div>
+      <button class="ctrl-btn logout-btn" onclick="logout()">Sign out</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel">
+      <div class="panel-head">
+        <p class="eyebrow">Coming soon</p>
+        <h2>Live study rooms</h2>
+      </div>
+
+      <div class="rooms-grid">
+        <article class="room-card ghost">
+          <div class="room-thumb"><span class="room-live">UNDER CONSTRUCTION</span></div>
+          <div class="room-info">
+            <h3>Math Room</h3>
+            <p>Study on video with other students, mic off, just for the motivation.</p>
+          </div>
+        </article>
+        <article class="room-card ghost">
+          <div class="room-thumb"><span class="room-live">UNDER CONSTRUCTION</span></div>
+          <div class="room-info">
+            <h3>Engineering Room</h3>
+            <p>Join a silent work session with other future engineers.</p>
+          </div>
+        </article>
+        <article class="room-card ghost">
+          <div class="room-thumb"><span class="room-live">UNDER CONSTRUCTION</span></div>
+          <div class="room-info">
+            <h3>Open Room</h3>
+            <p>Any subject, any time. Just shared focus.</p>
+          </div>
+        </article>
+      </div>
+      <p class="rooms-note">This feature is coming in a future version of StudyCommunity.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>StudyCommunity — built to help you study smarter, not longer.</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script>
+(async function init() {
+  const user = await requireAuth();
+  if (!user) return;
+  await refreshStreakPill();
+})();
+</script>
+</body>
+</html>

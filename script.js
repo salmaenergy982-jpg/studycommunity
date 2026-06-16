@@ -1,15 +1,7 @@
 /* ============================================
-   StudyCommunity — main script with Supabase backend
-   Auth + Tasks + Streak synced across all devices
+   StudyCommunity — index page script
+   Auth + Timer + Tasks
    ============================================ */
-
-// ---------- SUPABASE SETUP ----------
-const SUPABASE_URL = 'https://wushnsfqbbmvpzgmegui.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_Nz6emYtXb1G7Dn2oGGsKMw_XKwAaP9v';
-const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-let currentUser = null;
 
 // ---------- AUTH ----------
 function switchTab(tab) {
@@ -45,21 +37,19 @@ async function login() {
 }
 
 async function signup() {
+  const username = document.getElementById('signupUsername').value.trim();
   const email = document.getElementById('signupEmail').value.trim();
   const password = document.getElementById('signupPassword').value;
-  if (!email || !password) return showError('Please fill in all fields.');
+  if (!username || !email || !password) return showError('Please fill in all fields.');
   if (password.length < 6) return showError('Password must be at least 6 characters.');
 
-  const { error } = await sb.auth.signUp({ email, password });
+  const { data, error } = await sb.auth.signUp({ email, password });
   if (error) return showError(error.message);
-  showSuccess('Account created! Check your email to confirm, then sign in.');
-}
 
-async function logout() {
-  await sb.auth.signOut();
-  currentUser = null;
-  document.getElementById('appScreen').style.display = 'none';
-  document.getElementById('authScreen').style.display = 'flex';
+  if (data.user) {
+    await sb.from('profiles').insert({ user_id: data.user.id, username });
+  }
+  showSuccess('Account created! Check your email to confirm, then sign in.');
 }
 
 // Listen for auth state changes
@@ -68,18 +58,15 @@ sb.auth.onAuthStateChange(async (event, session) => {
     currentUser = session.user;
     document.getElementById('authScreen').style.display = 'none';
     document.getElementById('appScreen').style.display = 'block';
-    await loadUserData();
+    await getOrCreateProfile(currentUser.id, currentUser.email.split('@')[0]);
+    await loadTodos();
+    await loadStreak();
     initTimer();
   } else {
     document.getElementById('authScreen').style.display = 'flex';
     document.getElementById('appScreen').style.display = 'none';
   }
 });
-
-async function loadUserData() {
-  await loadTodos();
-  await loadStreak();
-}
 
 // ---------- TIMER ----------
 const RING_CIRCUMFERENCE = 678.6;
@@ -111,7 +98,7 @@ function tick() {
     isRunning = false;
     document.getElementById('startBtn').textContent = 'Start';
     document.getElementById('timerStatus').textContent = 'Session complete!';
-    registerSessionCompleted();
+    registerSessionCompleted(Math.round(totalSeconds / 60));
   }
 }
 
@@ -249,8 +236,6 @@ document.getElementById('todoForm').addEventListener('submit', async (e) => {
 });
 
 // ---------- STREAK ----------
-const DAY_LABELS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-
 function todayKey() {
   const d = new Date();
   return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
@@ -263,10 +248,11 @@ async function loadStreak() {
     .eq('user_id', currentUser.id)
     .single();
 
-  renderStreak(data || { count: 0, last_date: null, history: [] });
+  const count = data ? data.count : 0;
+  document.getElementById('streakCount').textContent = count;
 }
 
-async function registerSessionCompleted() {
+async function registerSessionCompleted(minutesCompleted) {
   const { data: existing } = await sb
     .from('streaks')
     .select('*')
@@ -303,28 +289,14 @@ async function registerSessionCompleted() {
     await sb.from('streaks').insert(streakData);
   }
 
-  renderStreak(streakData);
-}
-
-function renderStreak(data) {
-  const count = data ? data.count : 0;
-  const history = data ? (data.history || []) : [];
-
   document.getElementById('streakCount').textContent = count;
-  document.getElementById('streakBig').textContent = count;
 
-  const streakWeek = document.getElementById('streakWeek');
-  streakWeek.innerHTML = '';
-  const today = new Date();
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    const key = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
-    const filled = history.includes(key);
-
-    const dayDiv = document.createElement('div');
-    dayDiv.className = 'streak-day' + (filled ? ' filled' : '');
-    dayDiv.textContent = DAY_LABELS[d.getDay() === 0 ? 6 : d.getDay() - 1];
-    streakWeek.appendChild(dayDiv);
+  // Update total sessions / minutes on the profile
+  const { data: profile } = await sb.from('profiles').select('*').eq('user_id', currentUser.id).single();
+  if (profile) {
+    await sb.from('profiles').update({
+      total_sessions: (profile.total_sessions || 0) + 1,
+      total_minutes: (profile.total_minutes || 0) + minutesCompleted
+    }).eq('user_id', currentUser.id);
   }
 }

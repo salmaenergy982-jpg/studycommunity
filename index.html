@@ -34,6 +34,7 @@
     </div>
 
     <div id="signupForm" style="display:none">
+      <input type="text" id="signupUsername" placeholder="Username" class="auth-input">
       <input type="email" id="signupEmail" placeholder="Email" class="auth-input">
       <input type="password" id="signupPassword" placeholder="Password (min. 6 characters)" class="auth-input">
       <button class="ctrl-btn primary full" onclick="signup()">Create account</button>
@@ -53,10 +54,11 @@
       <span class="brand-name">StudyCommunity</span>
     </div>
     <nav class="topnav">
-      <a href="#timer" class="active">Session</a>
-      <a href="#tasks">Tasks</a>
-      <a href="#streak">Streak</a>
-      <a href="#rooms">Rooms</a>
+      <a href="index.html" class="active">Session</a>
+      <a href="profile.html">Profile</a>
+      <a href="rooms.html">Rooms</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="settings.html">Settings</a>
     </nav>
     <div class="topbar-right">
       <div class="streak-pill" id="streakPill">
@@ -121,56 +123,6 @@
       </div>
     </section>
 
-    <!-- STREAK -->
-    <section class="panel" id="streak">
-      <div class="panel-head">
-        <p class="eyebrow">Consistency</p>
-        <h2>Your focus streak</h2>
-      </div>
-
-      <div class="streak-card">
-        <div class="streak-big">
-          <span class="streak-number" id="streakBig">0</span>
-          <span class="streak-word">days in a row</span>
-        </div>
-        <div class="streak-week" id="streakWeek"></div>
-        <p class="streak-note">Complete at least one focus session each day to keep your streak alive. Your streak is saved across all your devices.</p>
-      </div>
-    </section>
-
-    <!-- ROOMS -->
-    <section class="panel" id="rooms">
-      <div class="panel-head">
-        <p class="eyebrow">Coming soon</p>
-        <h2>Live study rooms</h2>
-      </div>
-
-      <div class="rooms-grid">
-        <article class="room-card ghost">
-          <div class="room-thumb"><span class="room-live">UNDER CONSTRUCTION</span></div>
-          <div class="room-info">
-            <h3>Math Room</h3>
-            <p>Study on video with other students, mic off, just for the motivation.</p>
-          </div>
-        </article>
-        <article class="room-card ghost">
-          <div class="room-thumb"><span class="room-live">UNDER CONSTRUCTION</span></div>
-          <div class="room-info">
-            <h3>Engineering Room</h3>
-            <p>Join a silent work session with other future engineers.</p>
-          </div>
-        </article>
-        <article class="room-card ghost">
-          <div class="room-thumb"><span class="room-live">UNDER CONSTRUCTION</span></div>
-          <div class="room-info">
-            <h3>Open Room</h3>
-            <p>Any subject, any time. Just shared focus.</p>
-          </div>
-        </article>
-      </div>
-      <p class="rooms-note">This feature is coming in a future version of StudyCommunity.</p>
-    </section>
-
   </main>
 
   <footer class="site-footer">
@@ -180,6 +132,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
